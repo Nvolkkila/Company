@@ -1,13 +1,14 @@
 <?php
+$dbname = "Crudkontakter";
+
 $host = "localhost";
-$dbname = "Monster";
 $username = "root";
 $password = "";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "<span style='color: green; font-size: 24px; font-weight: bold;'>Connection success!</span>";
 } catch (PDOException $e) {
-    die("Anslutning misslyckades: " . $e->getMessage());
+    die("<span style='color: red; font-size: 24px; font-weight: bold;'>Connection failed with error: " . $e->getMessage() . "</span>");
 }
 ?>

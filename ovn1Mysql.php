@@ -1,48 +1,14 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
 require 'db_connect.php';
-
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=Monster', 'root', '');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Fel vid anslutning: " . $e->getMessage());
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $id = $_POST['id'];
-    $namn = $_POST['namn'];
-    $email = $_POST['email'];
-    $telefon = $_POST['telefon'];
-    $startDatum = $_POST['startDatum'];
-
-    $sql = "INSERT INTO employees (id, namn, email, telefon, startDatum) VALUES (:id, :namn, :email, :telefon, :startDatum)";
-    $stmt = $pdo->prepare($sql);
-    
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':namn', $namn);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':telefon', $telefon);
-    $stmt->bindParam(':startDatum', $startDatum);
-
-    if ($stmt->execute()) {
-        echo "Anställd tillagd!";
-    } else {
-        echo "Det gick inte att lägga till den anställde.";
-    }
-}
-
+//----------------------------------------------
 try {
     $stmt = $pdo->query("SELECT * FROM employees");
     $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Fel vid hämtning: " . $e->getMessage());
-}
-?>
-
+}?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -85,27 +51,25 @@ try {
             <?php endif; ?>
         <?php endforeach; ?>
     </ul>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+        }
+        h1, h2 {
+            color: #333;
 
-    <h2>Lägg till ny anställd</h2>
-    <form method="POST" action="">
-        
-        <label for="id">Id:</label> <br>
-        <input type="id" name="id" id="id" required><br>
-
-        <label for="namn">Namn:</label><br>
-        <input type="text" name="namn" id="namn" required><br>
-
-        <label for="email">Email:</label><br>
-        <input type="email" name="email" id="email" required><br>
-
-        <label for="telefon">Telefon:</label><br>
-        <input type="text" name="telefon" id="telefon" required><br>
-
-        <label for="startDatum">Datum:</label><br>
-        <input type="text" name="startDatum" id="startDatum" required><br>
-    
-    <button type="submit">Lägg till anställd</button>
-        </form>
-        
-</body>
-</html>
+    </style>
